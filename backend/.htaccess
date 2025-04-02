@@ -1,0 +1,9 @@
+Order deny,allow
+Deny from all
+
+<FilesMatch "^index\.php$">
+    Allow from all
+</FilesMatch>
+
+RewriteEngine On
+RewriteRule ^(.*)$ public/index.php [L]
