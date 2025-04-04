@@ -5,6 +5,7 @@ require_once __DIR__ . '/../src/config/jwt.php';
 require_once __DIR__ . '/../src/middleware/AuthMiddleware.php';
 require_once __DIR__ . '/../src/controllers/AuthController.php';
 require_once __DIR__ . '/../src/controllers/TaskController.php';
+require_once __DIR__ . '/../src/controllers/UserController.php';
 
 header('Content-Type: application/json');
 
@@ -27,6 +28,7 @@ try {
     $user_id = AuthMiddleware::handle();
 
     $pattern = '/\/api\/tasks\/([0-9]+)/'; 
+
     if (preg_match($pattern, $request_uri, $matches)) {
 
         $task_id = $matches[1];
@@ -49,6 +51,15 @@ try {
                 break;
             case 'POST':
                 TaskController::createTask($user_id);
+                break;
+            default:
+                http_response_code(405);
+                echo json_encode(['error' => 'Method not allowed']);
+        }
+    } elseif ($request_uri == '/api/me') {
+        switch ($request_method) {
+            case 'GET':
+                UserController::getMe($user_id);
                 break;
             default:
                 http_response_code(405);
