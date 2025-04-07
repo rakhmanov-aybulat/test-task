@@ -4,15 +4,13 @@ use Firebase\JWT\Key;
 
 class AuthMiddleware {
     public static function handle() {
-        $headers = getallheaders();
-        
-        if (!isset($headers['Authorization'])) {
+        if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
             http_response_code(401);
             echo json_encode(['error' => 'Token missing']);
             exit;
         }
 
-        $token = str_replace('Bearer ', '', $headers['Authorization']);
+        $token = str_replace('Bearer ', '', $_SERVER['HTTP_AUTHORIZATION']);
 
         try {
             $decoded = JWT::decode($token, new Key(JWT_SECRET, JWT_ALGORITHM));
