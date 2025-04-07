@@ -20,10 +20,6 @@ class Api {
       headers.append('Authorization', `Bearer ${token}`);
     }
 
-    console.log(`${this.baseUrl}${url}`, {
-      ...options,
-      headers,
-    });
     const response = await fetch(`${this.baseUrl}${url}`, {
       ...options,
       headers,

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { useAuth } from '../App';
+import { useAuth } from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/Api';
-import { getAuthToken } from '../utils/jwt';
 
 
 interface FormData {
