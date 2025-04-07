@@ -20,6 +20,10 @@ class Api {
       headers.append('Authorization', `Bearer ${token}`);
     }
 
+    console.log(`${this.baseUrl}${url}`, {
+      ...options,
+      headers,
+    });
     const response = await fetch(`${this.baseUrl}${url}`, {
       ...options,
       headers,
@@ -32,7 +36,7 @@ class Api {
     return response.json();
   }
 
-  public async fetchUserData(): Promise<any> {
+  public async fetchMe(): Promise<any> {
     return this.request('/api/me');
   }
 
@@ -82,4 +86,4 @@ class Api {
   }
 }
 
-export default Api;
+export const api = new Api('http://localhost');

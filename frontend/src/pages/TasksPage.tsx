@@ -1,15 +1,15 @@
-import React from 'react';
-import { User } from '../types/User';
+// import { useAuth } from '../App';
 
-interface TasksPageProps {
-  user: User;
-}
 
-const TasksPage: React.FC<TasksPageProps> = ({ user }) => {
+const TasksPage = () => {
+  // const { user, token } = useAuth();
+  // user;
+  // token;
+
   return (
     <div>
       <h1>Tasks Page</h1>
-      <p>Welcome, {user.name}!</p>
+      <p>Welcome, !</p>
     </div>
   );
 };

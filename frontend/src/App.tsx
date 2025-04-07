@@ -1,60 +1,113 @@
-import { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import TasksPage from './pages/TasksPage';
 import { User } from './types/User';
-import Api from './api/Api';
+import { getAuthToken, setAuthToken, removeAuthToken } from './utils/jwt';
+import { api } from './api/Api';
 
-const App = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const api = new Api('http://localhost');
+interface AuthContextType {
+  token: string | null;
+  user: User | null;
+  login: (token: string, user: User) => void;
+  logout: () => void;
+  checkAuth: () => Promise<boolean>;
+}
 
-  useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        const userData = await api.fetchUserData();
-        // TODO: add data validation
-        setUser(userData);
-      } catch (error) {
-        console.error('Failed to load user data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-    loadUserData();
-  }, []);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
   }
+  return context;
+};
+
+const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [token, setToken] = useState<string | null>(getAuthToken());
+  const [user, setUser] = useState<User | null>(null);
+
+  const login = (newToken: string, user: User) => {
+    setToken(newToken);
+    setUser(user);
+    setAuthToken(newToken);
+  };
+
+  const logout = () => {
+    setToken(null);
+    setUser(null);
+    removeAuthToken();
+  };
+
+  const checkAuth = async (): Promise<boolean> => {
+    if (!token) return false;
+
+    try {
+      const data = await api.fetchMe();
+      console.log(data);
+      console.log(data.status);
+      if (data.status == 'success') {
+        setUser(data.user);
+        return true;
+      } else {
+        logout();
+        return false;
+      }
+    } catch (error) {
+      logout();
+      return false;
+    }
+  };
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/login"
-          element={user ? <Navigate to="/tasks" /> : <LoginPage />}
-        />
-        <Route
-          path="/register"
-          element={user ? <Navigate to="/tasks" /> : <SignUpPage />}
-        />
+    <AuthContext.Provider value={{ token, user, login, logout, checkAuth }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-        <Route
-          path="/tasks"
-          element={user ? <TasksPage user={user} /> : <Navigate to="/login" />}
-        />
+const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { checkAuth } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-        <Route
-          path="*"
-          element={user ? <Navigate to="/tasks" /> : <Navigate to="/login" />}
-        />
-      </Routes>
-    </BrowserRouter>
+  useEffect(() => {
+    const verifyAuth = async () => {
+      const isValid = await checkAuth();
+      setIsAuthenticated(isValid);
+      setIsLoading(false);
+    };
+
+    verifyAuth();
+  }, []);
+
+  if (isLoading) return <div>Loading...</div>;
+
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+};
+
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route
+            path="/tasks"
+            element={
+              <PrivateRoute>
+                <TasksPage />
+              </PrivateRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 

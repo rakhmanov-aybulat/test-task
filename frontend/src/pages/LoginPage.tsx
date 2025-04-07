@@ -1,21 +1,16 @@
-import { useNavigate } from 'react-router-dom';
+import LoginForm from '../components/LoginForm';
+import SignUpLink from '../components/SignUpLink';
 
-function LoginPage() {
-  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // Логика авторизации (например, вызов api.loginUser)...
-    console.log('Logging in...');
-    navigate('/tasks');
-  };
-
+const LoginPage = () => {
   return (
     <div>
-      <h1>Login Page</h1>
-      <button onClick={handleLogin}>Login</button>
+      <h1>Login</h1>
+      <LoginForm  />
+      <SignUpLink />
     </div>
   );
-}
+};
 
 export default LoginPage;
 
