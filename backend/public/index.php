@@ -42,7 +42,7 @@ try {
                 TaskController::deleteTask($user_id, $task_id);
                 break;
             default:
-                respond('error', null, 'Method not allowed', [], 405 )
+                respond('error', null, 'Method not allowed', [], 405 );
         }
     } elseif ($request_uri == '/api/tasks') {
         switch ($request_method) {
@@ -53,7 +53,7 @@ try {
                 TaskController::createTask($user_id);
                 break;
             default:
-                respond('error', null, 'Method not allowed', [], 405 )
+                respond('error', null, 'Method not allowed', [], 405 );
         }
     } elseif ($request_uri == '/api/me') {
         switch ($request_method) {
@@ -61,7 +61,7 @@ try {
                 UserController::getMe($user_id);
                 break;
             default:
-                respond('error', null, 'Method not allowed', [], 405 )
+                respond('error', null, 'Method not allowed', [], 405 );
         }
     } else {
         respond('error', null, 'Not found', [], 404);

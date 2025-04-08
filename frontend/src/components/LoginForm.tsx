@@ -18,7 +18,7 @@ interface Errors {
 const LoginForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({ email: '', password: '' });
   const [errors, setErrors] = useState<Errors>({});
-  const { login } = useAuth();
+  const { token, login } = useAuth();
   const navigate = useNavigate();
 
   const validate = (): boolean => {
@@ -42,13 +42,13 @@ const LoginForm: React.FC = () => {
     if (!validate()) return;
 
     try {
-      const data = await api.loginUser(formData);
+      const response = await api.loginUser(formData.email, formData.password);
  
-      if (data.status == 'success') {
-        login(data.token, data.user);
+      if (response.status == 'success') {
+        login(response.data.token, response.data.user);
         navigate('/tasks');
       } else {
-        setErrors({ general: 'Invalid email or password. Please try again.' });
+        setErrors({ general: response.message });
       }
     } catch (error) {
       setErrors({ general: 'An error occurred. Please try again later.' });

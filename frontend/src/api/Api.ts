@@ -1,4 +1,5 @@
-import { getAuthToken } from '../utils/jwt';
+import { Status } from '../types/Status';
+
 
 class Api {
   private baseUrl: string;
@@ -7,79 +8,85 @@ class Api {
     this.baseUrl = baseUrl;
   }
 
-  private async request<T>(url: string, options?: RequestInit,
-                           requiresAuth: boolean = true): Promise<T> {
-
-    const headers = new Headers(options?.headers);
-
-    if (requiresAuth) {
-      const token = getAuthToken();
-      if (!token) {
-        throw new Error('No token found');
-      }
-      headers.append('Authorization', `Bearer ${token}`);
-    }
-
-    const response = await fetch(`${this.baseUrl}${url}`, {
-      ...options,
-      headers,
+  public async registerUser(name: string, email: string,
+                            password: string): Promise<any> {
+    const response = await fetch(`${this.baseUrl}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
     });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
     return response.json();
   }
 
-  public async fetchMe(): Promise<any> {
-    return this.request('/api/me');
-  }
-
-  public async registerUser(userData: { email: string;
-                            password: string; name: string }): Promise<any> {
-    return this.request('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
-    }, false);
-  }
-
-  public async loginUser(credentials: { email: string;
-                         password: string }): Promise<any> {
-    return this.request('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials),
-    }, false);
-  }
-
-  public async fetchTasks(): Promise<any> {
-    return this.request('/api/tasks');
-  }
-
-  public async createTask(taskData: { title: string }): Promise<any> {
-    return this.request('/api/tasks', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(taskData),
+  public async loginUser(email: string, password: string) {
+    const response = await fetch(`${this.baseUrl}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
     });
+    return response.json();
   }
 
-  public async updateTask(taskId: string, updatedData: { title?: string;
-                          completed?: boolean }): Promise<any> {
-    return this.request(`/api/tasks/${taskId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedData),
+  public async fetchMe(token: string): Promise<any> {
+    const response = await fetch(`${this.baseUrl}/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
+    return response.json();
   }
 
-  public async deleteTask(taskId: string): Promise<any> {
-    return this.request(`/api/tasks/${taskId}`, {
+  public async fetchTasks(token: string): Promise<any> {
+    const response = await fetch(`${this.baseUrl}/tasks`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.json();
+  }
+
+  public async createTask(token: string, title: string,
+                          description: string, status: Status): Promise<any> {
+    const response = await fetch(`${this.baseUrl}/tasks`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ title, description, status }),
+    });
+    return response.json();
+  }
+
+  public async updateTask(
+      token: string, taskId: number, title: string,
+      description: string, status: Status): Promise<any> {
+    const response = await fetch(`${this.baseUrl}/tasks/${taskId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ title, description, status }),
+    });
+    return response.json();
+  }
+
+  public async deleteTask(token: string, taskId: number): Promise<any> {
+    const response = await fetch(`${this.baseUrl}/tasks/${taskId}`, {
       method: 'DELETE',
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
+    return response.json();
   }
 }
 
-export const api = new Api('http://localhost');
+export const api = new Api('http://localhost/api');
+

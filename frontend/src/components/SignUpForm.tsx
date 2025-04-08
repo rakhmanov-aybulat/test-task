@@ -49,14 +49,29 @@ const SignUpForm: React.FC = () => {
     if (!validate()) return;
 
     try {
-      const data = await api.registerUser(formData); 
+      const response = await api.registerUser(
+          formData.name, formData.email, formData.password); 
 
-      if (data.status == 'success') {
-        login(data.token, data.user);
+      if (response.status == 'success') {
+        login(response.data.token, response.data.user);
         navigate('/tasks');
+      } else if (response.message.includes('Invalid input data')) {
+          for (const err of response.errors) {
+              switch (err.field) {
+                case 'name':
+                  setErrors({ name: err.message });
+                  break;
+                case 'email':
+                  setErrors({ email: err.message });
+                  break;
+                case 'password':
+                  setErrors({ password: err.message });
+                  break;
+              }
+          }
       } else {
-        setErrors({ general: 'Registration failed. Please try again.'});
-      }
+        setErrors({ general: response.message});
+      } 
     } catch (err) {
       setErrors({ general: 'An error occurred. Please check your connection.'});
     }

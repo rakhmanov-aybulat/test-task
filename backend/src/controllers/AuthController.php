@@ -64,9 +64,11 @@ class AuthController {
             $token = self::generateToken($user_id);
 
             respond('success', [
-                'id' => $user_id,
-                'name' => $data['name'],
-                'email' => $data['email'],
+                'user' => [
+                    'id' => $user_id,
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                ],
                 'token' => $token,
             ], 'User registered successfully.', [], 201);
 
@@ -106,9 +108,11 @@ class AuthController {
             $token = self::generateToken($user['id']);
 
             respond('success', [
-                'id' => $user['id'],
-                'name' => $user['name'],
-                'email' => $user['email'],
+                'user' => [
+                    'id' => $user['id'],
+                    'name' => $user['name'],
+                    'email' => $user['email'],
+                ],
                 'token' => $token,
             ], 'Login successful.', [], 200);
 
