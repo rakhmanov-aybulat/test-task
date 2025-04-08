@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../src/config/db.php';
 require_once __DIR__ . '/../src/config/jwt.php';
+require_once __DIR__ . '/../src/helpers/helper.php';
 require_once __DIR__ . '/../src/middleware/AuthMiddleware.php';
 require_once __DIR__ . '/../src/controllers/AuthController.php';
 require_once __DIR__ . '/../src/controllers/TaskController.php';
@@ -41,8 +42,7 @@ try {
                 TaskController::deleteTask($user_id, $task_id);
                 break;
             default:
-                http_response_code(405);
-                echo json_encode(['error' => 'Method not allowed']);
+                respond('error', null, 'Method not allowed', [], 405 )
         }
     } elseif ($request_uri == '/api/tasks') {
         switch ($request_method) {
@@ -53,8 +53,7 @@ try {
                 TaskController::createTask($user_id);
                 break;
             default:
-                http_response_code(405);
-                echo json_encode(['error' => 'Method not allowed']);
+                respond('error', null, 'Method not allowed', [], 405 )
         }
     } elseif ($request_uri == '/api/me') {
         switch ($request_method) {
@@ -62,15 +61,14 @@ try {
                 UserController::getMe($user_id);
                 break;
             default:
-                http_response_code(405);
-                echo json_encode(['error' => 'Method not allowed']);
+                respond('error', null, 'Method not allowed', [], 405 )
         }
     } else {
-        http_response_code(404);
-        echo json_encode(['error' => 'Not found']);
+        respond('error', null, 'Not found', [], 404);
     }
     
 } catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => $e->getMessage()]);
+    error_log($e->getMessage());
+    respond('error', null, 'An unexpected error occurred.', [], 500);
 }
+
