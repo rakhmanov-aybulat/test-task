@@ -5,24 +5,31 @@ import { api } from '../api/Api';
 
 
 interface FormData {
+  name: string;
   email: string;
   password: string;
 }
 
 interface Errors {
+  name?: string;
   email?: string;
   password?: string;
   general?: string;
 }
 
-const LoginForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({ email: '', password: '' });
+const SignUpForm: React.FC = () => {
+  const initialData = { name: '', email: '', password: '' };
+  const [formData, setFormData] = useState<FormData>(initialData);
   const [errors, setErrors] = useState<Errors>({});
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const validate = (): boolean => {
     const newErrors: Errors = {};
+
+    if (formData.name.length <= 3) {
+      newErrors.name = 'Name must be longer than 3 characters.';
+    }
 
     if (!formData.email.includes('@')) {
       newErrors.email = 'Email must contain the "@" symbol.';
@@ -42,16 +49,16 @@ const LoginForm: React.FC = () => {
     if (!validate()) return;
 
     try {
-      const data = await api.loginUser(formData);
- 
+      const data = await api.registerUser(formData); 
+
       if (data.status == 'success') {
         login(data.token, data.user);
         navigate('/tasks');
       } else {
-        setErrors({ general: 'Invalid email or password. Please try again.' });
+        setErrors({ general: 'Registration failed. Please try again.'});
       }
-    } catch (error) {
-      setErrors({ general: 'An error occurred. Please try again later.' });
+    } catch (err) {
+      setErrors({ general: 'An error occurred. Please check your connection.'});
     }
   };
 
@@ -61,6 +68,17 @@ const LoginForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <div>
+        <label>Name:</label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+        />
+        {errors.name && <p>{errors.name}</p>}
+      </div>
+
       <div>
         <label>Email:</label>
         <input
@@ -86,11 +104,11 @@ const LoginForm: React.FC = () => {
       {errors.general && <p>{errors.general}</p>}
 
       <button type="submit">
-        Login
+        SignUp
       </button>
     </form>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
 

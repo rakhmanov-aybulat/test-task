@@ -1,21 +1,15 @@
-import { useNavigate } from 'react-router-dom';
+import SignUpForm from '../components/SignUpForm';
+import LoginLink from '../components/LoginLink';
 
-function SignUpPage() {
-  const navigate = useNavigate();
-
-  const handleSignUp = () => {
-    // Логика регистрации (например, вызов api.registerUser)...
-    console.log('Signing up...');
-    navigate('/login');
-  };
-
+const SignUpPage: React.FC = () => {
   return (
     <div>
-      <h1>Sign Up Page</h1>
-      <button onClick={handleSignUp}>Sign Up</button>
+      <h1>Sign Up</h1>
+      <SignUpForm />
+      <LoginLink />
     </div>
   );
-}
+};
 
 export default SignUpPage;
 

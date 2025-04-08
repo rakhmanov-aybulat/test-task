@@ -2,7 +2,7 @@ import LoginForm from '../components/LoginForm';
 import SignUpLink from '../components/SignUpLink';
 
 
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
   return (
     <div>
       <h1>Login</h1>
