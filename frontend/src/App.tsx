@@ -1,28 +1,12 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignUpPage';
-import TasksPage from './pages/TasksPage';
+import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthProvider';
-import PrivateRoute from './components/PrivateRoute';
-
+import AppRoutes from './components/AppRoutes';
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route
-            path="/tasks"
-            element={
-              <PrivateRoute>
-                <TasksPage />
-              </PrivateRoute>
-            }
-          />
-          <Route path="*" element={<Navigate to="/login" />} />
-        </Routes>
+        <AppRoutes />
       </BrowserRouter>
     </AuthProvider>
   );

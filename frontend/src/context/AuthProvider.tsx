@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useEffect, useContext, useState } from 'react';
 import { getAuthToken, setAuthToken, removeAuthToken } from '../utils/jwt';
 import { api } from '../api/Api';
 
@@ -12,6 +12,7 @@ interface User {
 interface AuthContextType {
   token: string | null;
   user: User | null;
+  isAuthenticated: boolean;
   login: (token: string, user: User) => void;
   logout: () => void;
   checkAuth: () => Promise<boolean>;
@@ -30,6 +31,8 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string | null>(getAuthToken());
   const [user, setUser] = useState<User | null>(null);
+  
+  const isAuthenticated = !!token && !!user;
 
   const login = (newToken: string, user: User) => {
     setToken(newToken);
@@ -61,8 +64,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  useEffect(() => {
+    checkAuth(); // Проверяем аутентификацию при монтировании
+  }, []);
+
+  const value = {
+    token,
+    user,
+    isAuthenticated,
+    login,
+    logout,
+    checkAuth,
+  };
+
   return (
-    <AuthContext.Provider value={{ token, user, login, logout, checkAuth }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
