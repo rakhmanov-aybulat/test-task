@@ -3,17 +3,9 @@ import { getAuthToken, setAuthToken, removeAuthToken } from '../utils/jwt';
 import { api } from '../api/Api';
 
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
 interface AuthContextType {
-  token: string | null;
-  user: User | null;
-  isAuthenticated: boolean;
-  login: (token: string, user: User) => void;
+  token: string;
+  login: (token: string) => void;
   logout: () => void;
   checkAuth: () => Promise<boolean>;
 }
@@ -29,20 +21,15 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [token, setToken] = useState<string | null>(getAuthToken());
-  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string>(getAuthToken() || '');
   
-  const isAuthenticated = !!token && !!user;
-
-  const login = (newToken: string, user: User) => {
+  const login = (newToken: string) => {
     setToken(newToken);
-    setUser(user);
     setAuthToken(newToken);
   };
 
   const logout = () => {
-    setToken(null);
-    setUser(null);
+    setToken('');
     removeAuthToken();
   };
 
@@ -50,9 +37,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!token) return false;
 
     try {
-      const data = await api.fetchMe();
-      if (data.status == 'success') {
-        setUser(data.user);
+      const response = await api.fetchMe(token);
+      if (response.status == 'success') {
         return true;
       } else {
         logout();
@@ -65,13 +51,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    checkAuth(); // Проверяем аутентификацию при монтировании
+    checkAuth();
   }, []);
 
   const value = {
     token,
-    user,
-    isAuthenticated,
     login,
     logout,
     checkAuth,

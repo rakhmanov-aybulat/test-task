@@ -18,7 +18,7 @@ interface Errors {
 const LoginForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({ email: '', password: '' });
   const [errors, setErrors] = useState<Errors>({});
-  const { token, login } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const validate = (): boolean => {
@@ -45,7 +45,7 @@ const LoginForm: React.FC = () => {
       const response = await api.loginUser(formData.email, formData.password);
  
       if (response.status == 'success') {
-        login(response.data.token, response.data.user);
+        login(response.data.token);
         navigate('/tasks');
       } else {
         setErrors({ general: response.message });

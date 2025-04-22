@@ -1,4 +1,4 @@
-import { Status } from '../types/Status';
+import { StatusType } from '../types/Status';
 
 
 class Api {
@@ -50,7 +50,7 @@ class Api {
   }
 
   public async createTask(token: string, title: string,
-                          description: string, status: Status): Promise<any> {
+                          description: string, status: StatusType): Promise<any> {
     const response = await fetch(`${this.baseUrl}/tasks`, {
       method: "POST",
       headers: {
@@ -64,7 +64,7 @@ class Api {
 
   public async updateTask(
       token: string, taskId: number, title: string,
-      description: string, status: Status): Promise<any> {
+      description: string, status: StatusType): Promise<any> {
     const response = await fetch(`${this.baseUrl}/tasks/${taskId}`, {
       method: "PUT",
       headers: {
