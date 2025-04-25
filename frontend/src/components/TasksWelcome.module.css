@@ -4,3 +4,8 @@
   color: rgb(var(--state-purple));
   margin-bottom: 1rem;
 }
+
+.userName {
+  color: rgb(var(--blue));
+}
+

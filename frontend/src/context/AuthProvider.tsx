@@ -5,6 +5,7 @@ import { api } from '../api/Api';
 
 interface AuthContextType {
   token: string;
+  userName: string | null;
   login: (token: string) => void;
   logout: () => void;
   checkAuth: () => Promise<boolean>;
@@ -22,6 +23,7 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string>(getAuthToken() || '');
+  const [userName, setUserName] = useState<string | null>(null);
   
   const login = (newToken: string) => {
     setToken(newToken);
@@ -30,6 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setToken('');
+    setUserName(null);
     removeAuthToken();
   };
 
@@ -39,6 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await api.fetchMe(token);
       if (response.status == 'success') {
+        setUserName(response.data.name);
         return true;
       } else {
         logout();
@@ -56,6 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const value = {
     token,
+    userName,
     login,
     logout,
     checkAuth,
