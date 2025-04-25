@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: 60%;
+  max-width: 450px;
+  padding-top: 3rem;
+}
+
+.authHeader {
+  font-size: 2rem;
+  font-weight: bold;
+  color: rgb(var(--state-purple));
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.authLink {
+  text-align: center;
+}

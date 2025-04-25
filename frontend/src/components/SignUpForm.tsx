@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/Api';
+import styles from './AuthFormCommon.module.css';
 
 
 interface FormData {
@@ -82,8 +83,8 @@ const SignUpForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form className={styles.wrapper} onSubmit={handleSubmit}>
+      <div className={styles.authInputField}>
         <label>Name:</label>
         <input
           type="text"
@@ -94,7 +95,7 @@ const SignUpForm: React.FC = () => {
         {errors.name && <p>{errors.name}</p>}
       </div>
 
-      <div>
+      <div className={styles.authInputField}>
         <label>Email:</label>
         <input
           type="email"
@@ -105,7 +106,7 @@ const SignUpForm: React.FC = () => {
         {errors.email && <p>{errors.email}</p>}
       </div>
 
-      <div>
+      <div className={styles.authInputField}>
         <label>Password:</label>
         <input
           type="password"
@@ -118,7 +119,7 @@ const SignUpForm: React.FC = () => {
 
       {errors.general && <p>{errors.general}</p>}
 
-      <button type="submit">
+      <button className={styles.authButton} type="submit">
         SignUp
       </button>
     </form>
