@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.logoText {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgb(var(--state-purple));
+}
+
+.logoutButton {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: rgba(var(--fire-red), 0.15);
+  color: rgb(var(--fire-red));
+}
+

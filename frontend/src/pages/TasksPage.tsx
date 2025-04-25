@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthProvider';
 import Task from '../types/Task';
 import { Status, StatusType } from '../types/Status';
 import { FilterType} from '../types/Filter';
+import styles from './TasksPage.module.css';
 
 
 const TasksPage: React.FC = () => {
@@ -18,6 +19,7 @@ const TasksPage: React.FC = () => {
   const filteredTasks = useMemo(
     () => tasks.filter(task => filter == 'all' ? true : task.status == filter) 
     , [filter, tasks]
+    // TODO: add sort newest first
   );
 
   useEffect(() => {
@@ -69,7 +71,7 @@ const TasksPage: React.FC = () => {
 
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <TasksHeader />
       <TasksWelcome />
       <TaskFilters onFilterChange={setFilter} />

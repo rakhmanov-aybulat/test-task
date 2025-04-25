@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Status, StatusType } from '../types/Status';
+import styles from './TaskCard.module.css';
 
 
 interface TaskCardProps {
@@ -19,18 +20,30 @@ const TaskCard: React.FC<TaskCardProps> = (
     onUpdateStatus(newStatus);
   };
 
+  const getStatusClassName = (): string => {
+    switch (currentStatus) {
+      case (Status.ASSIGNED):
+        return styles['statusSelectAssigned'];
+      case (Status.IN_PROGRESS):
+        return styles['statusSelectInProgress'];
+      case (Status.COMPLETED):
+        return styles['statusSelectCompleted'];
+      case (Status.CANCELLED):
+        return styles['statusSelectCanceled'];
+      default:
+        return '';
+    }
+  };
+
   return (
-    <div
-      style={{
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        padding: '1rem',
-        marginBottom: '1rem',
-      }}
-    >
-      <h3>{title}</h3>
-      <p style={{ fontSize: '0.9rem', color: '#555' }}>{description}</p>
-      <select value={currentStatus} onChange={handleChange}>
+    <div className={styles.wrapper}>
+      <h3 className={styles.taskTitle}>{title}</h3>
+      <p className={styles.taskDescription}>{description}</p>
+      <select
+        className={`${styles.statusSelect} ${getStatusClassName()}`}
+        value={currentStatus}
+        onChange={handleChange}
+      >
       {Object.values(Status).map(value => (
         <option
           key={value}

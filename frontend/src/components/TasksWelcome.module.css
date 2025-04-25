@@ -1,0 +1,6 @@
+.welcomeText {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: rgb(var(--state-purple));
+  margin-bottom: 1rem;
+}

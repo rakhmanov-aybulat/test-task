@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.titleInput, .descriptionTextArea {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: rgb(var(--state-blue));
+}
+
+.descriptionTextArea {
+  resize: none;
+}
+
+.createTaskButton {
+  align-self: start;
+  padding: 0.5rem 1rem;
+  background-color: rgba(var(--blue), 0.1);
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgb(var(--blue));
+}
+

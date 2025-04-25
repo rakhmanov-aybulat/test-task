@@ -1,4 +1,5 @@
 import { Filter, FilterType} from '../types/Filter';
+import styles from './TaskFilters.module.css';
 
 
 interface TaskFiltersProps {
@@ -8,19 +9,12 @@ interface TaskFiltersProps {
 const TaskFilters: React.FC<TaskFiltersProps> = ({ onFilterChange }) => {
 
   return (
-    <div style={{ marginBottom: '1rem' }}>
+    <div className={styles.filterButtonList}>
       {Object.values(Filter).map(value => (
         <button
           key={value}
           onClick={() => onFilterChange(value)}
-          style={{
-            padding: '0.5rem 1rem',
-            margin: '0 0.5rem',
-            border: 'none',
-            backgroundColor: '#007bff',
-            color: 'white',
-            cursor: 'pointer',
-          }}
+          className={styles.filterButton}
         >
           {value.charAt(0).toUpperCase() + value.slice(1).replace('_', ' ')}
         </button>

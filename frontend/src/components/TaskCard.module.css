@@ -1,0 +1,46 @@
+.wrapper {
+  border-radius: 1.25rem;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1rem;
+  background-color: rgb(var(--pale-white));
+}
+
+.taskTitle {
+  font-size: 1.1rem;
+  color: rgb(var(--state-purple));
+  margin-bottom: 1rem;
+}
+
+.taskDescription {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.statusSelect {
+  font-size: 0.9rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.statusSelectAssigned {
+  background-color: rgba(var(--status-assigned), 0.1);
+  color: rgb(var(--status-assigned));
+}
+
+.statusSelectInProgress {
+  background-color: rgba(var(--status-in-progress), 0.1);
+  color: rgb(var(--status-in-progress));
+}
+
+.statusSelectCompleted {
+  background-color: rgba(var(--status-completed), 0.1);
+  color: rgb(var(--status-completed));
+}
+
+.statusSelectCanceled {
+  background-color: rgba(var(--status-canceled), 0.1);
+  color: rgb(var(--status-canceled));
+}
+
+
+

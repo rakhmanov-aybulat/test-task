@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Status, StatusType } from '../types/Status';
+import styles from './TaskForm.module.css';
 
 interface TaskFormProps {
   onCreate: (title: string, description: string, status: StatusType) => void;
@@ -18,29 +19,24 @@ const TaskForm: React.FC<TaskFormProps> = ({ onCreate }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: '1rem' }}>
+    <form onSubmit={handleSubmit} className={styles.wrapper}>
       <input
         type="text"
-        placeholder="Title"
+        placeholder="Add a new task..."
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem' }}
+        className={styles.titleInput}
       />
-      <textarea
-        placeholder="Description"
+      <input
+        type="text"
+        placeholder="Add a description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem' }}
+        className={styles.descriptionTextArea}
       />
       <button
         type="submit"
-        style={{
-          padding: '0.5rem 1rem',
-          border: 'none',
-          backgroundColor: '#28a745',
-          color: 'white',
-          cursor: 'pointer',
-        }}
+        className={styles.createTaskButton}
       >
         Create Task
       </button>
