@@ -8,10 +8,11 @@ interface TaskCardProps {
   description: string;
   status: StatusType;
   onUpdateStatus: (newStatus: StatusType) => void;
+  onEditButtonClick: () => void;
 }
 
 const TaskCard: React.FC<TaskCardProps> = (
-    { title, description, status, onUpdateStatus }) => {
+    { title, description, status, onUpdateStatus, onEditButtonClick}) => {
   const [currentStatus, setCurrentStatus] = useState(status);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -53,6 +54,13 @@ const TaskCard: React.FC<TaskCardProps> = (
         </option>
       ))}
       </select>
+      <button
+        className={styles.editButton}
+        onClick={onEditButtonClick}
+        aria-label="Edit task"
+        >
+        Edit
+      </button>
     </div>
   );
 };

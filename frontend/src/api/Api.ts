@@ -1,4 +1,4 @@
-import { StatusType } from '../types/Status';
+import Task from '../types/Task';
 
 
 class Api {
@@ -49,29 +49,34 @@ class Api {
     return response.json();
   }
 
-  public async createTask(token: string, title: string,
-                          description: string, status: StatusType): Promise<any> {
+  public async createTask(token: string, task: Omit<Task, 'id'>): Promise<any> {
     const response = await fetch(`${this.baseUrl}/tasks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ title, description, status }),
+      body: JSON.stringify({
+          title: task.title,
+          description: task.description,
+          status: task.status
+      }),
     });
     return response.json();
   }
 
-  public async updateTask(
-      token: string, taskId: number, title: string,
-      description: string, status: StatusType): Promise<any> {
-    const response = await fetch(`${this.baseUrl}/tasks/${taskId}`, {
+  public async updateTask(token: string, task: Task): Promise<any> {
+    const response = await fetch(`${this.baseUrl}/tasks/${task.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ title, description, status }),
+      body: JSON.stringify({
+          title: task.title,
+          description: task.description,
+          status: task.status
+      }),
     });
     return response.json();
   }

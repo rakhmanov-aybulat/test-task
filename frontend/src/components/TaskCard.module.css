@@ -42,5 +42,11 @@
   color: rgb(var(--status-canceled));
 }
 
-
-
+.editButton {
+  padding: 0.5rem 1rem;
+  background-color: rgba(var(--fire-red), 0.1);
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgb(var(--fire-red));
+}

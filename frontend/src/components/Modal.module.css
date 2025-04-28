@@ -1,0 +1,25 @@
+.modal {
+  justify-self: center;
+  align-self: center;
+  position: relative;
+  padding: 2rem;
+  border-radius: 1.25rem;
+  width: 50%;
+}
+.modal::backdrop {
+  background: hsl(0 0% 0% / 50%);
+}
+
+.closeButton {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  padding: 0.5rem 1rem;
+  background-color: rgba(var(--fire-red), 0.1);
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgb(var(--fire-red));
+  margin-bottom: 1rem;
+}
+
