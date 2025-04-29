@@ -13,7 +13,7 @@ import styles from './TasksPage.module.css';
 
 
 const TasksPage: React.FC = () => {
-  const { token, logout } = useAuth();
+  const { token, userName, logout } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<FilterType>('all');
   const filteredTasks = useMemo(
@@ -73,7 +73,7 @@ const TasksPage: React.FC = () => {
   return (
     <div className={styles.wrapper}>
       <TasksHeader />
-      <TasksWelcome />
+      <TasksWelcome userName={userName}/>
       <TaskFilters onFilterChange={setFilter} />
       <TaskForm onCreate={handleCreateTask} />
       {filteredTasks.map((task) => (

@@ -54,7 +54,7 @@ const SignUpForm: React.FC = () => {
           formData.name, formData.email, formData.password); 
 
       if (response.status == 'success') {
-        login(response.data.token);
+        login(response.data.token, response.data.user.name);
          
         navigate('/tasks');
       } else if (response.message.includes('Invalid input data')) {

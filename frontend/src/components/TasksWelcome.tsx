@@ -1,9 +1,10 @@
-import { useAuth } from '../context/AuthProvider';
 import styles from './TasksWelcome.module.css';
 
+interface TaskWelcomeProps {
+  userName: string | null;  
+}
 
-const TasksWelcome: React.FC = () => {
-  const { userName } = useAuth();
+const TasksWelcome: React.FC<TaskWelcomeProps> = ({ userName}) => {
   return (
     <div className={styles.welcomeText}>
       <h1>Welcome{userName ?

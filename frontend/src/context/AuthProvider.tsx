@@ -6,7 +6,7 @@ import { api } from '../api/Api';
 interface AuthContextType {
   token: string;
   userName: string | null;
-  login: (token: string) => void;
+  login: (token: string, userName: string) => void;
   logout: () => void;
   checkAuth: () => Promise<boolean>;
 }
@@ -25,15 +25,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string>(getAuthToken() || '');
   const [userName, setUserName] = useState<string | null>(null);
   
-  const login = (newToken: string) => {
+  const login = (newToken: string, userName: string) => {
     setToken(newToken);
     setAuthToken(newToken);
+    setUserName(userName);
   };
 
   const logout = () => {
     setToken('');
-    setUserName(null);
     removeAuthToken();
+    setUserName(null)
   };
 
   const checkAuth = async (): Promise<boolean> => {
@@ -72,3 +73,4 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     </AuthContext.Provider>
   );
 };
+

@@ -46,7 +46,7 @@ const LoginForm: React.FC = () => {
       const response = await api.loginUser(formData.email, formData.password);
  
       if (response.status == 'success') {
-        login(response.data.token);
+        login(response.data.token, response.data.user.name);
         navigate('/tasks');
       } else {
         setErrors({ general: response.message });
