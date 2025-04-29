@@ -92,13 +92,6 @@ class TaskController {
                     'message' => 'Title is required.'
                 ];
             }
-            
-            if (empty($data['description'])) {
-                $errors[] = [
-                    'field' => 'description',
-                    'message' => 'Description is required.'
-                ];
-            }
     
             if (!empty($errors)) {
                 respond('error', null, 'Invalid input data.', $errors, 400);

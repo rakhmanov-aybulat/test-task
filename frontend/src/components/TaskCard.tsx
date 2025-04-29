@@ -1,25 +1,26 @@
 import { useState } from 'react';
 import { Status, StatusType } from '../types/Status';
+import Task from '../types/Task';
 import styles from './TaskCard.module.css';
 
 
 interface TaskCardProps {
-  title: string;
-  description: string;
-  status: StatusType;
+  task: Task;
   onUpdateStatus: (newStatus: StatusType) => void;
   onEditButtonClick: () => void;
 }
 
 const TaskCard: React.FC<TaskCardProps> = (
-    { title, description, status, onUpdateStatus, onEditButtonClick}) => {
-  const [currentStatus, setCurrentStatus] = useState(status);
+    { task, onUpdateStatus, onEditButtonClick}) => {
+  const [currentStatus, setCurrentStatus] = useState(task.status);
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  // TODO: improve naming
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newStatus = e.target.value as StatusType;
     setCurrentStatus(newStatus);
     onUpdateStatus(newStatus);
   };
+
 
   const getStatusClassName = (): string => {
     switch (currentStatus) {
@@ -38,12 +39,12 @@ const TaskCard: React.FC<TaskCardProps> = (
 
   return (
     <div className={styles.wrapper}>
-      <h3 className={styles.taskTitle}>{title}</h3>
-      <p className={styles.taskDescription}>{description}</p>
+      <h3 className={styles.taskTitle}>{task.title}</h3>
+      <p className={styles.taskDescription}>{task.description}</p>
       <select
         className={`${styles.statusSelect} ${getStatusClassName()}`}
         value={currentStatus}
-        onChange={handleChange}
+        onChange={handleStatusChange}
       >
       {Object.values(Status).map(value => (
         <option

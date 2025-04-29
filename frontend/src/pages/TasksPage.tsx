@@ -2,7 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 import TasksHeader from '../components/TasksHeader';
 import TasksWelcome from '../components/TasksWelcome';
 import TaskFilters from '../components/TaskFilters';
-import TaskForm, { TaskFormMode } from '../components/TaskForm';
+import TaskForm, { TaskFormMode, TaskFormData, defaultTaskFormData }
+  from '../components/TaskForm';
 import TaskCard from '../components/TaskCard';
 import { api } from '../api/Api';
 import { useAuth } from '../context/AuthProvider';
@@ -17,13 +18,15 @@ const TasksPage: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<FilterType>('all');
   const filteredTasks = useMemo(
-    () => tasks.filter(task => filter == 'all' ? true : task.status == filter) 
+    () => tasks.filter(task => filter == 'all' ? true : task.status == filter).reverse() 
     , [filter, tasks]
     // TODO: add sort newest first
   );
 
   const [isTaskFormModalOpen, setTaskFormModalOpen] = useState(false);
   const [taskFormMode, setTaskFormMode] = useState<TaskFormMode>('create');
+  
+  const [taskFormData, setTaskFormData] = useState<TaskFormData>(defaultTaskFormData);
 
   useEffect(() => {
     fetchTasks();
@@ -50,7 +53,7 @@ const TasksPage: React.FC = () => {
       const response = await api.createTask(token, newTask);
       if (response.status == 'success') {
         const newTask = response.data
-        setTasks([newTask, ...tasks]);
+        setTasks([...tasks, newTask]);
       } else if ('Unauthorized access' in response.message) {
           logout();
       } else {
@@ -87,6 +90,8 @@ const TasksPage: React.FC = () => {
   }
   
   const handleCloseTaskFormModal = () => {
+    setTaskFormData(defaultTaskFormData);
+    console.log(taskFormData);
     setTaskFormModalOpen(false);
   }
 
@@ -106,24 +111,32 @@ const TasksPage: React.FC = () => {
       <TaskFilters onFilterChange={setFilter} />
       <button
         className={styles.createTaskButton}
-        onClick={handleOpenTaskFormModal}
+        onClick={() => {
+          setTaskFormData(defaultTaskFormData);
+          setTaskFormMode('create');
+          handleOpenTaskFormModal();
+        }}
       >
         New Task
       </button>
       <TaskForm
         isOpen={isTaskFormModalOpen}
-        onClose={handleCloseTaskFormModal}
-        onSubmit={handleCreateTask}
+        modalData={taskFormData}
         taskFormMode={taskFormMode}
+        onClose={handleCloseTaskFormModal}
+        onCreate={handleCreateTask}
+        onUpdate={handleUpdateTask}        
       />
       {filteredTasks.map((task) => (
         <TaskCard
           key={task.id}
-          title={task.title}
-          description={task.description}
-          status={task.status}
+          task={task}
           onUpdateStatus={(newStatus) => handleUpdateStatus(task.id, newStatus)}
-          onEditButtonClick={handleOpenTaskFormModal}
+          onEditButtonClick={() => {
+            setTaskFormData({task: task});
+            setTaskFormMode('edit');
+            handleOpenTaskFormModal();
+          }}
         />
       ))}
     </div>

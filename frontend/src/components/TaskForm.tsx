@@ -7,18 +7,27 @@ import styles from './TaskForm.module.css';
 
 export type TaskFormMode = 'create' | 'edit';
 
+export interface TaskFormData {
+  task: Task;
+}
+export const defaultTaskFormData = {
+  task: { id: -1, title: '', description: '', status: Status.ASSIGNED}
+}
+
 interface TaskFormProps {
   isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (task: Task) => void;
   taskFormMode: TaskFormMode;
+  modalData: TaskFormData;
+  onClose: () => void;
+  onCreate: (task: Omit<Task, 'id'>) => void;
+  onUpdate: (task: Task) => void;
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({
-    isOpen, onClose, onSubmit, taskFormMode }) => {
+    isOpen, taskFormMode, modalData, onClose, onCreate, onUpdate }) => {
   const focusInputRef = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+
+  const [formData, setFormData] = useState<TaskFormData>(modalData);
 
   // Focus on the title field when modal opens
   useEffect(() => {
@@ -26,33 +35,35 @@ const TaskForm: React.FC<TaskFormProps> = ({
       setTimeout(() => {
         focusInputRef.current!.focus();
       }, 0);
+      setFormData(modalData);
     }
   }, [isOpen]);
 
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    setFormData((prev) => {
+      return ({ task: {...prev.task, [name]: value }});
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) {
+    if (!formData.task.title.trim()) {
       // TODO: add beautiful error message
       alert('Title must be filled out')
       return
     };
-    let taskId = -1;
     if (taskFormMode == 'edit') {
-      console.error(e.target);
-    } 
-    onSubmit({
-      id: taskId,
-      title: title,
-      description: description,
-      status: Status.ASSIGNED
-    });
-    setTitle('');
-    setDescription('');
+      onUpdate(formData.task) 
+    } else if (taskFormMode == 'create') {
+      onCreate({ ...formData.task, status: Status.ASSIGNED });
+    }
   };
 
   const handleClose = () => {
-    setTitle('');
-    setDescription('');
+    setFormData(defaultTaskFormData);
     onClose();
   };
 
@@ -62,16 +73,18 @@ const TaskForm: React.FC<TaskFormProps> = ({
         <input
           ref={focusInputRef}
           type="text"
+          name="title"
           placeholder="Add a new task..."
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={formData.task.title}
+          onChange={handleInputChange}
           className={styles.titleInput}
         />
         <input
           type="text"
+          name="description"
           placeholder="Add a description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={formData.task.description}
+          onChange={handleInputChange}
           className={styles.descriptionTextArea}
         />
         <button
