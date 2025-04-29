@@ -16,5 +16,6 @@
   border-radius: 0.5rem;
   background-color: rgba(var(--fire-red), 0.15);
   color: rgb(var(--fire-red));
+  font-weight: 600;
 }
 

@@ -5,10 +5,31 @@
   background-color: rgb(var(--pale-white));
 }
 
+.taskHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.buttonMenu {
+  display: flex;
+  gap: 1rem;
+}
+
+.buttonMenu button {
+  background: none;
+}
+
+.buttonMenu button img {
+  margin: auto 0 auto 0;
+}
+
+
 .taskTitle {
   font-size: 1.1rem;
   color: rgb(var(--state-purple));
-  margin-bottom: 1rem;
 }
 
 .taskDescription {
@@ -42,11 +63,3 @@
   color: rgb(var(--status-canceled));
 }
 
-.editButton {
-  padding: 0.5rem 1rem;
-  background-color: rgba(var(--fire-red), 0.1);
-  border-radius: 0.75rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: rgb(var(--fire-red));
-}

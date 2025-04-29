@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Status, StatusType } from '../types/Status';
 import Task from '../types/Task';
 import styles from './TaskCard.module.css';
+import EditPencilIcon from '../assets/edit_pencil_icon.svg'; 
+import DeleteCrossIcon from '../assets/delete_cross_icon.svg';
 
 
 interface TaskCardProps {
@@ -40,7 +42,23 @@ const TaskCard: React.FC<TaskCardProps> = (
 
   return (
     <div className={styles.wrapper}>
-      <h3 className={styles.taskTitle}>{task.title}</h3>
+      <div className={styles.taskHeader}>
+        <h3 className={styles.taskTitle}>{task.title}</h3>
+        <div className={styles.buttonMenu}>
+          <button
+            onClick={onEditButtonClick}
+            aria-label="Edit Task"
+            >
+            <img src={EditPencilIcon} alt="Edit Task" />
+          </button>
+          <button
+            onClick={onDeleteButtonClick}
+            aria-label="Delete Task"
+          >
+            <img src={DeleteCrossIcon} alt="Delete Task" />
+          </button>
+        </div>
+      </div>
       <p className={styles.taskDescription}>{task.description}</p>
       <select
         className={`${styles.statusSelect} ${getStatusClassName()}`}
@@ -56,20 +74,6 @@ const TaskCard: React.FC<TaskCardProps> = (
         </option>
       ))}
       </select>
-      <button
-        className={styles.editButton}
-        onClick={onEditButtonClick}
-        aria-label="Edit task"
-        >
-        Edit
-      </button>
-      <button
-        className={styles.deleteButton}
-        onClick={onDeleteButtonClick}
-        aria-label="Delete task"
-        >
-        Delete
-      </button>
     </div>
   );
 };
