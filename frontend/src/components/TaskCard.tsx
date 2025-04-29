@@ -15,18 +15,15 @@ interface TaskCardProps {
 
 const TaskCard: React.FC<TaskCardProps> = (
     { task, onUpdateStatus, onEditButtonClick, onDeleteButtonClick}) => {
-  const [currentStatus, setCurrentStatus] = useState(task.status);
 
-  // TODO: improve naming
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // TODO: fix glitching add instant status update
     const newStatus = e.target.value as StatusType;
-    setCurrentStatus(newStatus);
     onUpdateStatus(newStatus);
   };
 
-
   const getStatusClassName = (): string => {
-    switch (currentStatus) {
+    switch (task.status) {
       case (Status.ASSIGNED):
         return styles['statusSelectAssigned'];
       case (Status.IN_PROGRESS):
@@ -62,7 +59,7 @@ const TaskCard: React.FC<TaskCardProps> = (
       <p className={styles.taskDescription}>{task.description}</p>
       <select
         className={`${styles.statusSelect} ${getStatusClassName()}`}
-        value={currentStatus}
+        value={task.status}
         onChange={handleStatusChange}
       >
       {Object.values(Status).map(value => (

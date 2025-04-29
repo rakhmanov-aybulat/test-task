@@ -80,15 +80,6 @@ const TasksPage: React.FC = () => {
     handleCloseTaskFormModal();  
   };
 
-  const handleUpdateStatus = (taskId: number, newStatus: StatusType) => {
-    handleUpdateTask
-    setTasks(tasks.map(
-        (task) => task.id === taskId ? { ...task, status: newStatus } : task
-    ));
-
-    console.log("TODO: update status handler")
-  };
-
   
   const handleDeleteTask = async (taskId: number) => {
     try {
@@ -145,7 +136,7 @@ const TasksPage: React.FC = () => {
         <TaskCard
           key={task.id}
           task={task}
-          onUpdateStatus={(newStatus) => handleUpdateStatus(task.id, newStatus)}
+          onUpdateStatus={(newStatus) => handleUpdateTask({...task, status: newStatus})}
           onEditButtonClick={() => {
             setTaskFormData({task: task});
             setTaskFormMode('edit');
