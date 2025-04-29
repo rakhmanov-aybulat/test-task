@@ -5,7 +5,8 @@ import { api } from '../api/Api';
 
 interface AuthContextType {
   token: string;
-  login: (token: string) => void;
+  userName: string | null;
+  login: (token: string, userName: string) => void;
   logout: () => void;
   checkAuth: () => Promise<boolean>;
 }
@@ -22,15 +23,18 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string>(getAuthToken() || '');
+  const [userName, setUserName] = useState<string | null>(null);
   
-  const login = (newToken: string) => {
+  const login = (newToken: string, userName: string) => {
     setToken(newToken);
     setAuthToken(newToken);
+    setUserName(userName);
   };
 
   const logout = () => {
     setToken('');
     removeAuthToken();
+    setUserName(null)
   };
 
   const checkAuth = async (): Promise<boolean> => {
@@ -39,6 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await api.fetchMe(token);
       if (response.status == 'success') {
+        setUserName(response.data.name);
         return true;
       } else {
         logout();
@@ -56,6 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const value = {
     token,
+    userName,
     login,
     logout,
     checkAuth,
@@ -67,3 +73,4 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     </AuthContext.Provider>
   );
 };
+

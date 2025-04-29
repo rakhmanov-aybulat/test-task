@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '../context/AuthProvider';
+import { useAuth,  } from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/Api';
 import styles from './AuthFormCommon.module.css';
@@ -54,7 +54,8 @@ const SignUpForm: React.FC = () => {
           formData.name, formData.email, formData.password); 
 
       if (response.status == 'success') {
-        login(response.data.token);
+        login(response.data.token, response.data.user.name);
+         
         navigate('/tasks');
       } else if (response.message.includes('Invalid input data')) {
           for (const err of response.errors) {
