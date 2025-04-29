@@ -8,6 +8,7 @@
 .taskHeader {
   display: flex;
   flex-direction: row;
+  gap: 1rem;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
@@ -26,7 +27,10 @@
   margin: auto 0 auto 0;
 }
 
-
+.taskTitle, .taskDescription {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
 .taskTitle {
   font-size: 1.1rem;
   color: rgb(var(--state-purple));
