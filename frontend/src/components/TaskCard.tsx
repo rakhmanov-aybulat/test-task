@@ -8,10 +8,11 @@ interface TaskCardProps {
   task: Task;
   onUpdateStatus: (newStatus: StatusType) => void;
   onEditButtonClick: () => void;
+  onDeleteButtonClick: () => void;
 }
 
 const TaskCard: React.FC<TaskCardProps> = (
-    { task, onUpdateStatus, onEditButtonClick}) => {
+    { task, onUpdateStatus, onEditButtonClick, onDeleteButtonClick}) => {
   const [currentStatus, setCurrentStatus] = useState(task.status);
 
   // TODO: improve naming
@@ -61,6 +62,13 @@ const TaskCard: React.FC<TaskCardProps> = (
         aria-label="Edit task"
         >
         Edit
+      </button>
+      <button
+        className={styles.deleteButton}
+        onClick={onDeleteButtonClick}
+        aria-label="Delete task"
+        >
+        Delete
       </button>
     </div>
   );

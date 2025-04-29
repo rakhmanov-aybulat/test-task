@@ -19,8 +19,8 @@ interface TaskFormProps {
   taskFormMode: TaskFormMode;
   modalData: TaskFormData;
   onClose: () => void;
-  onCreate: (task: Omit<Task, 'id'>) => void;
-  onUpdate: (task: Task) => void;
+  onCreate: (newTask: Omit<Task, 'id'>) => void;
+  onUpdate: (updatedTask: Task) => void;
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({

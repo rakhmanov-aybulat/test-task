@@ -20,12 +20,9 @@ const TasksPage: React.FC = () => {
   const filteredTasks = useMemo(
     () => tasks.filter(task => filter == 'all' ? true : task.status == filter).reverse() 
     , [filter, tasks]
-    // TODO: add sort newest first
   );
-
   const [isTaskFormModalOpen, setTaskFormModalOpen] = useState(false);
   const [taskFormMode, setTaskFormMode] = useState<TaskFormMode>('create');
-  
   const [taskFormData, setTaskFormData] = useState<TaskFormData>(defaultTaskFormData);
 
   useEffect(() => {
@@ -41,7 +38,7 @@ const TasksPage: React.FC = () => {
           logout();
       } else {
         // TODO: refactor
-        console.error('Failed to fetch tasks:', response.errors);
+        throw new Error(response.errors);
       }
     } catch (error) {
       console.error('Failed to fetch tasks:', error);
@@ -57,8 +54,7 @@ const TasksPage: React.FC = () => {
       } else if ('Unauthorized access' in response.message) {
           logout();
       } else {
-        // TODO: refactor
-        console.error('Failed to create task:', response.errors);
+        throw new Error(response.errors);
       }
     } catch (error) {
       console.error('Failed to create task:', error);
@@ -76,14 +72,39 @@ const TasksPage: React.FC = () => {
       } else if ('Unauthorized access' in response.message) {
           logout();
       } else {
-        // TODO: refactor
-        console.error('Failed to update task:', response.errors);
+        throw new Error(response.errors);
       }
     } catch (error) {
       console.error('Failed to update task:', error);
     }
     handleCloseTaskFormModal();  
   };
+
+  const handleUpdateStatus = (taskId: number, newStatus: StatusType) => {
+    handleUpdateTask
+    setTasks(tasks.map(
+        (task) => task.id === taskId ? { ...task, status: newStatus } : task
+    ));
+
+    console.log("TODO: update status handler")
+  };
+
+  
+  const handleDeleteTask = async (taskId: number) => {
+    try {
+      const response = await api.deleteTask(token, taskId);
+      if (response.status == 'success') {
+        setTasks(tasks.filter( (task) => task.id !== taskId));
+      } else if ('Unauthorized access' in response.message) {
+          logout();
+      } else {
+        throw new Error(response.errors);
+      }
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+    }
+  };
+
 
   const handleOpenTaskFormModal = () => {
     setTaskFormModalOpen(true);
@@ -95,13 +116,6 @@ const TasksPage: React.FC = () => {
     setTaskFormModalOpen(false);
   }
 
-  const handleUpdateStatus = (taskId: number, newStatus: StatusType) => {
-    setTasks(tasks.map(
-        (task) => task.id === taskId ? { ...task, status: newStatus } : task
-    ));
-
-    console.log("TODO: update status handler")
-  };
 
 
   return (
@@ -137,6 +151,7 @@ const TasksPage: React.FC = () => {
             setTaskFormMode('edit');
             handleOpenTaskFormModal();
           }}
+          onDeleteButtonClick={() => handleDeleteTask(task.id)}
         />
       ))}
     </div>
