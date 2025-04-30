@@ -8,7 +8,6 @@ import TaskCard from '../components/TaskCard';
 import { api } from '../api/Api';
 import { useAuth } from '../context/AuthProvider';
 import Task from '../types/Task';
-import { StatusType } from '../types/Status';
 import { FilterType} from '../types/Filter';
 import styles from './TasksPage.module.css';
 

@@ -5,7 +5,9 @@
   padding: 2rem;
   border-radius: 1.25rem;
   width: 50%;
+  min-width: 200px;
 }
+
 .modal::backdrop {
   background: hsl(0 0% 0% / 50%);
 }
@@ -21,5 +23,12 @@
   font-weight: 600;
   color: rgb(var(--fire-red));
   margin-bottom: 1rem;
+}
+
+@media (max-width: 50rem) {
+.modal {
+  width: 80%;
+}
+
 }
 

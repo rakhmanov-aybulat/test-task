@@ -18,3 +18,11 @@
 .authLink {
   text-align: center;
 }
+
+@media (max-width: 50rem) {
+.wrapper {
+  width: 90%;
+  padding-top: 3rem;
+}
+}
+

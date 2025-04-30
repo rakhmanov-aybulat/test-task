@@ -22,6 +22,8 @@
   --status-completed: 40, 167, 69;   /* Зеленый */
   --status-canceled: 255, 94, 94;    /* Красный */
 
+  --small-screens: 700px;
+
   font-family: "Urbanist", sans-serif;
   line-height: 1.2;
   font-weight: 400;
