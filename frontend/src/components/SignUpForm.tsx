@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useAuth,  } from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import { useAuth,  } from '../context/AuthProvider';
 import { api } from '../api/Api';
 import styles from './AuthFormCommon.module.css';
 
@@ -18,7 +18,8 @@ interface Errors {
   general?: string;
 }
 
-const SignUpForm: React.FC = () => {
+
+const SignUpForm = () => {
   const initialData = { name: '', email: '', password: '' };
   const [formData, setFormData] = useState<FormData>(initialData);
   const [errors, setErrors] = useState<Errors>({});
@@ -50,27 +51,35 @@ const SignUpForm: React.FC = () => {
     if (!validate()) return;
 
     try {
-      const response = await api.registerUser(
-          formData.name, formData.email, formData.password); 
-
+      const response = await api.registerUser(formData);
       if (response.status == 'success') {
+
+        if (response.data === undefined) {
+          throw new Error('Data is undefined');
+        } 
+
         login(response.data.token, response.data.user.name);
-         
         navigate('/tasks');
+
       } else if (response.message.includes('Invalid input data')) {
-          for (const err of response.errors) {
-              switch (err.field) {
-                case 'name':
-                  setErrors({ name: err.message });
-                  break;
-                case 'email':
-                  setErrors({ email: err.message });
-                  break;
-                case 'password':
-                  setErrors({ password: err.message });
-                  break;
-              }
+
+        if (response.errors === undefined) {
+          throw new Error('Invalid input data');
+        };
+
+        for (const err of response.errors) {
+          switch (err.field) {
+            case 'name':
+              setErrors({ name: err.message });
+              break;
+            case 'email':
+              setErrors({ email: err.message });
+              break;
+            case 'password':
+              setErrors({ password: err.message });
+              break;
           }
+        }
       } else {
         setErrors({ general: response.message});
       } 

@@ -6,8 +6,8 @@ interface TaskFiltersProps {
   onFilterChange: (filter: FilterType) => void;
 }
 
-const TaskFilters: React.FC<TaskFiltersProps> = ({ onFilterChange }) => {
 
+const TaskFilters = ({ onFilterChange }: TaskFiltersProps) => {
   return (
     <div className={styles.filterButtonList}>
       {Object.values(Filter).map(value => (

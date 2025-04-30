@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import Modal from "./Modal";
 import Task from '../types/Task';
 import { Status } from '../types/Status';
@@ -10,6 +10,7 @@ export type TaskFormMode = 'create' | 'edit';
 export interface TaskFormData {
   task: Task;
 }
+
 export const defaultTaskFormData = {
   task: { id: -1, title: '', description: '', status: Status.ASSIGNED}
 }
@@ -23,8 +24,15 @@ interface TaskFormProps {
   onUpdate: (updatedTask: Task) => void;
 }
 
-const TaskForm: React.FC<TaskFormProps> = ({
-    isOpen, taskFormMode, modalData, onClose, onCreate, onUpdate }) => {
+
+const TaskForm = ({
+  isOpen,
+  taskFormMode,
+  modalData,
+  onClose,
+  onCreate,
+  onUpdate
+}: TaskFormProps) => {
   const focusInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState<TaskFormData>(modalData);

@@ -1,10 +1,11 @@
 import styles from './TasksWelcome.module.css';
 
+
 interface TaskWelcomeProps {
   userName: string | null;  
 }
 
-const TasksWelcome: React.FC<TaskWelcomeProps> = ({ userName}) => {
+const TasksWelcome = ({ userName }: TaskWelcomeProps) => {
   return (
     <div className={styles.welcomeText}>
       <h1>Welcome{userName ?

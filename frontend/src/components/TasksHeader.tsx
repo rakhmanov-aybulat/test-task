@@ -1,7 +1,8 @@
 import { useAuth } from '../context/AuthProvider';
 import styles from './TasksHeader.module.css';
 
-const TasksHeader: React.FC = () => {
+
+const TasksHeader = () => {
   const { logout } = useAuth();
 
   return (

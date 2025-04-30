@@ -1,14 +1,16 @@
+import { Link } from 'react-router-dom';
 import SignUpForm from '../components/SignUpForm';
-import LoginLink from '../components/LoginLink';
 import styles from './AuthCommon.module.css';
 
 
-const SignUpPage: React.FC = () => {
+const SignUpPage = () => {
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.authHeader}>Sign Up</h1>
       <SignUpForm />
-      <LoginLink />
+      <p className={styles.authLink}>
+        Already have an account? <Link to="/login">Log in here</Link>.
+      </p>
     </div>
   );
 };

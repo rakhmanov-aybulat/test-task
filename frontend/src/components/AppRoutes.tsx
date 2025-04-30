@@ -4,7 +4,8 @@ import LoginPage from '../pages/LoginPage';
 import SignUpPage from '../pages/SignUpPage';
 import TasksPage from '../pages/TasksPage';
 
-const AppRoutes: React.FC = () => {
+
+const AppRoutes = () => {
   const { token } = useAuth();
 
   return (

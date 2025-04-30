@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthProvider';
 import AppRoutes from './components/AppRoutes';
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>

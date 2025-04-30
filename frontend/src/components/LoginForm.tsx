@@ -16,7 +16,8 @@ interface Errors {
   general?: string;
 }
 
-const LoginForm: React.FC = () => {
+
+const LoginForm = () => {
   const [formData, setFormData] = useState<FormData>({ email: '', password: '' });
   const [errors, setErrors] = useState<Errors>({});
   const { login } = useAuth();
@@ -43,11 +44,32 @@ const LoginForm: React.FC = () => {
     if (!validate()) return;
 
     try {
-      const response = await api.loginUser(formData.email, formData.password);
- 
+      const response = await api.loginUser(formData);
       if (response.status == 'success') {
+
+        if (response.data === undefined) {
+          throw new Error('Data is undefined');
+        } 
+
         login(response.data.token, response.data.user.name);
         navigate('/tasks');
+
+      } else if (response.message.includes('Invalid input data')) {
+
+        if (response.errors === undefined) {
+          throw new Error('Invalid input data');
+        };
+
+        for (const err of response.errors) {
+          switch (err.field) {
+            case 'email':
+              setErrors({ email: err.message });
+              break;
+            case 'password':
+              setErrors({ password: err.message });
+              break;
+          }
+        }
       } else {
         setErrors({ general: response.message });
       }

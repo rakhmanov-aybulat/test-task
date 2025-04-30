@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Status, StatusType } from '../types/Status';
 import Task from '../types/Task';
 import styles from './TaskCard.module.css';
@@ -7,15 +6,20 @@ import DeleteCrossIcon from '../assets/delete_cross_icon.svg';
 
 
 interface TaskCardProps {
+  key: number;
   task: Task;
   onUpdateStatus: (newStatus: StatusType) => void;
   onEditButtonClick: () => void;
   onDeleteButtonClick: () => void;
 }
 
-const TaskCard: React.FC<TaskCardProps> = (
-    { task, onUpdateStatus, onEditButtonClick, onDeleteButtonClick}) => {
 
+const TaskCard = ({
+  task,
+  onUpdateStatus,
+  onEditButtonClick,
+  onDeleteButtonClick
+}: TaskCardProps) => {
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     // TODO: fix glitching add instant status update
     const newStatus = e.target.value as StatusType;
