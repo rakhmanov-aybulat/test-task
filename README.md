@@ -3,7 +3,6 @@
 A full-stack web application for managing tasks with user authentication, built
 with React (TypeScript) frontend and PHP backend.
 
-
 ## Features
 
 - User authentication (register, login, logout)
@@ -59,14 +58,32 @@ with React (TypeScript) frontend and PHP backend.
    JWT_SECRET=your_jwt_secret_key
    ```
 
-3. Start the application:
+3. Build the frontend:
+   - Navigate to the frontend directory:
+     ```bash
+     cd frontend
+     ```
+   - Install dependencies:
+     ```bash
+     npm install
+     ```
+   - Build the frontend:
+     ```bash
+     npm run build
+     ```
+   - Return to the root directory:
+     ```bash
+     cd ..
+     ```
+
+4. Start the application:
    ```bash
    docker-compose up -d
    ```
 
-4. The application will be available at:
-   - Frontend: http://localhost
-   - Backend API: http://localhost/api
+5. The application will be available at:
+   - Frontend: [http://localhost](http://localhost)
+   - Backend API: [http://localhost/api](http://localhost/api)
 
 ### Development
 
@@ -87,6 +104,8 @@ For frontend development:
    npm run dev
    ```
 
+> **Note:** During development, you can use `npm run dev` to run the frontend locally while still connecting to the backend running in Docker.
+
 ## API Documentation
 
 The backend provides a RESTful API with the following endpoints:
@@ -94,7 +113,7 @@ The backend provides a RESTful API with the following endpoints:
 - `POST /api/register` - Register a new user
 - `POST /api/login` - Authenticate a user
 - `GET /api/me` - Get current user data
-- `GET /api/tasks` - Get all tasks for current user
+- `GET /api/tasks` - Get all tasks for the current user
 - `POST /api/tasks` - Create a new task
 - `PUT /api/tasks/:id` - Update a task
 - `DELETE /api/tasks/:id` - Delete a task
@@ -138,28 +157,3 @@ Detailed API documentation is available in [docs/api.md](docs/api.md).
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## Contact
-
-Your Name - your.email@example.com
-
-Project Link: [https://github.com/yourusername/task-management-app](https://github.com/yourusername/task-management-app)
-
-This README includes:
-1. Project description and features
-2. Technology stack
-3. Installation and setup instructions
-4. API documentation reference
-5. Project structure overview
-6. Contribution guidelines
-7. License and contact information
-
-You can customize it further by:
-- Adding real screenshots
-- Including a demo link if deployed
-- Adding more detailed development instructions
-- Including test coverage information
-- Adding CI/CD pipeline details
