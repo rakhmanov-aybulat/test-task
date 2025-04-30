@@ -49,9 +49,11 @@ Registers a new user.
 {
   "status": "success",
   "data": {
-    "id": 1,
-    "name": "John Doe",
-    "email": "john@example.com",
+    "user": {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+    } ,
     "token": "abc123xyz"
   },
   "message": "User registered successfully."
@@ -109,9 +111,11 @@ Authenticates a user and returns a token.
 {
   "status": "success",
   "data": {
-    "id": 1,
-    "name": "John Doe",
-    "email": "john@example.com",
+    "user": {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+    } ,
     "token": "abc123xyz"
   },
   "message": "Login successful."
